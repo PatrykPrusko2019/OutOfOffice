@@ -1,0 +1,119 @@
+﻿@using OutOffOffice.Application.ApplicationUser
+@using OutOffOffice.Application.LeaveRequest
+
+@model X.PagedList.IPagedList<OutOffOffice.Application.LeaveRequest.LeaveRequestDto>
+@using X.PagedList.Mvc.Core
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>List Of Leave Requests</h1>
+
+@if (CurrentUser.Role == "EMPLOYEE" || CurrentUser.Role == "ADMIN")
+{
+    <p>
+        <a class="btn btn-primary" asp-controller="LeaveRequest" asp-action="Create">Create</a>
+    </p>
+}
+
+@using (Html.BeginForm("Index", "LeaveRequest", FormMethod.Get))
+
+@using (Html.BeginForm())
+{
+    <p>
+        Find by id: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+        <input type="submit" value="Search" />
+    </p>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.ActionLink("Id", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Absence Reason", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                @Html.ActionLink("StartDate", "Index", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                @Html.ActionLink("EndDate", "Index", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Comment", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Status", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Employee Id", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @if (Model == null) return;
+
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AbsenceReason)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Comment)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+
+                    @if (CurrentUser.Role == "EMPLOYEE")
+                    {
+
+                        @if (item.Status == "NEW" || item.Status == "CANCELLED")
+                        {
+                            <a class="btn btn-outline-secondary" asp-controller="LeaveRequest" asp-action="ChangeStatus" asp-route-id="@item.Id">Submit</a>
+                        }
+                        else if (item.Status == "SUBMITTED" || item.Status == "ACCEPT")
+                        {
+                            <a class="btn btn-outline-secondary" asp-controller="LeaveRequest" asp-action="ChangeStatus" asp-route-id="@item.Id">Cancel</a>
+                        }
+                    }
+                </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmployeeId)
+            </td>
+            <td>
+                    @if (CurrentUser.Role == "EMPLOYEE" || CurrentUser.Role == "ADMIN")
+                    {
+                        <a class="btn btn-outline-secondary" asp-controller="LeaveRequest" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    }
+                    @if (CurrentUser.Role == "EMPLOYEE" && item.Status != "APPROVED_REQUEST")
+                    {
+                        <a class="btn btn-outline-secondary" asp-controller="LeaveRequest" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    }
+                    
+
+                <a class="btn btn-outline-secondary" asp-controller="LeaveRequest" asp-action="Details" asp-route-id="@item.Id">Details</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+            new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))

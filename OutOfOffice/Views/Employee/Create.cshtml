@@ -1,0 +1,60 @@
+﻿@using OutOffOffice.Application.Employee.Commands.CreateEmployee
+
+@model CreateEmployeeCommand
+
+<h1>Create Employee</h1>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form action="/Employee/Create" method="post">
+            <div class="form-group mb-3">
+                <label class="control-label" asp-for="FullName">FullName</label>
+                <input class="form-control" type="text" asp-for="FullName">
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="control-label" asp-for="Status">Status</label>
+                <select class="form-select" type="text" asp-for="Status">
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                </select>
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="control-label" asp-for="Position">Position</label>
+                <select class="form-select" type="text" asp-for="Position">
+                    <option value="EMPLOYEE">EMPLOYEE</option>
+                    <option value="PROJECT_MANAGER">PROJECT_MANAGER</option>
+                    <option value="HR_MANAGER">HR_MANAGER</option>
+                </select>
+                <span asp-validation-for="Position" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="control-label" asp-for="OutOfOfficeBalance">OutOfOfficeBalance</label>
+                <input class="form-control" type="number" asp-for="OutOfOfficeBalance">
+            </div>
+
+            <div class="form-group mb-3">
+                <input type="submit" value="Create" class="btn btn-primary">
+            </div>
+
+            <div>
+
+                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

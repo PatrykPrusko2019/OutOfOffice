@@ -1,0 +1,77 @@
+﻿@using OutOffOffice.Application.ApplicationUser
+@model X.PagedList.IPagedList<OutOffOffice.Application.ApprovalRequest.ApprovalRequestDto>
+@using X.PagedList.Mvc.Core
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>List Of Approval Requests</h1>
+
+@using (Html.BeginForm("Index", "ApprovalRequest", FormMethod.Get))
+
+@using (Html.BeginForm())
+{
+    <p>
+        Find by id: @Html.TextBox("SearchApprovalRequestId", ViewBag.CurrentFilter as string)
+        <input type="submit" value="Search" />
+    </p>
+}
+
+
+<table class="table table-bordered border-primary">
+    <thead>
+        <tr>
+            <th>
+                @Html.ActionLink("Id", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Comment", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Status", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Approver EmployeeId", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Leave RequestId", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.Comment)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ApproverEmployeeId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LeaveRequestId)
+            </td>
+            <td>
+                    @if (CurrentUser.Role == "PROJECT_MANAGER" || CurrentUser.Role == "HR_MANAGER" || CurrentUser.Role == "ADMIN")
+                    {
+                        <a class="btn btn-outline-secondary" asp-controller="ApprovalRequest" asp-action="ChangeStatus" asp-route-id="@item.Id">ChangeStatus</a>
+                    }
+                   
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+                new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))

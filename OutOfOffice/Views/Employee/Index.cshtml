@@ -1,0 +1,52 @@
+﻿@using OutOffOffice.Application.ApplicationUser
+@model IEnumerable<OutOffOffice.Application.Employee.EmployeeDto>
+
+@{
+    ViewData["Title"] = "List of Employees";
+}
+
+<h1>List of Employees</h1>
+
+@if (CurrentUser.Role == "HR_MANAGER" || CurrentUser.Role == "ADMIN")
+{
+    <p>
+        <a asp-action="Create" class="btn btn-secondary">Create New</a>
+    </p>
+}
+
+@using (Html.BeginForm("Index", "Employee", FormMethod.Get))
+@using (Html.BeginForm())
+{
+    <p>
+        Find by name: @Html.TextBox("SearchName")
+        <input type="submit" value="Search" asp-controller="Employee" asp-action="Index" />
+    </p>
+}
+@if (Model == null) return;
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="card m-3" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">@item.FullName</h5>
+                <h5 class="card-title">@item.Position</h5>
+                <h6 class="card-subtitle mb-2 text-muted">@item.Status</h6>
+                <p class="card-text">@item.OutOfOfficeBalance</p>
+
+                <a class="btn btn-primary" asp-controller="Employee" asp-action="Details" asp-route-id="@item.Id">Details</a>
+
+                @if (item.IsEditable && (CurrentUser.Role == "HR_MANAGER" || CurrentUser.Role == "ADMIN"))
+                {
+                    <a class="btn btn-outline-secondary" asp-controller="Employee" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <a class="btn btn-outline-secondary" asp-controller="Employee" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                }
+                
+                @if (CurrentUser.Role == "PROJECT_MANAGER" || CurrentUser.Role == "ADMIN")
+                {
+                    <a class="btn btn-primary" asp-controller="Employee" asp-action="AddToProject" asp-route-id="@item.Id">AddToProject</a>
+                }
+            </div>
+        </div>
+    }
+</div>

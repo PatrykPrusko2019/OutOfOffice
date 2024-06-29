@@ -1,0 +1,75 @@
+﻿@model IEnumerable<OutOffOffice.Application.Project.ProjectDto>
+
+@{
+    ViewData["Title"] = "AddToProject";
+}
+
+<h1>AddToProject</h1>
+
+<p>
+    <a class="btn btn-outline-secondary" asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProjectType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Comment)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProjectManagerId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmployeesId)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProjectType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Comment)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProjectManagerId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmployeesId)
+            </td>
+            <td>
+                    <a class="btn btn-primary" asp-controller="Employee" asp-action="AddEmployeeToProject" asp-route-id="@item.Id">AddEmployeeToProject</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
