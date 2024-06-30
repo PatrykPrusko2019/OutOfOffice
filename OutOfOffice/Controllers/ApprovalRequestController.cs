@@ -135,8 +135,6 @@ namespace OutOfOffice.MVC.Controllers
         {
             var approvalRequestDto = await _mediator.Send(new GetApprovalRequestByIdQuery(id));
 
-            CurrentStatus = approvalRequestDto.Status;
-
             EditApprovalRequestCommand model = _mapper.Map<EditApprovalRequestCommand>(approvalRequestDto);
 
             return View(model);
@@ -152,7 +150,7 @@ namespace OutOfOffice.MVC.Controllers
                 return View(approvalRequest);
             }
 
-            if (approvalRequest.Status == "APPROVED_REQUEST" && CurrentStatus == "REJECTED_REQUEST")
+            if (approvalRequest.Status == "APPROVED_REQUEST" && ( CurrentStatus == "REJECTED_REQUEST" || CurrentStatus == "NEW" ))
             {
                 //check if correct free days by given employee
                 var employee = await _mediator.Send(new GetEmployeeByIdQuery(approvalRequest.ApproverEmployeeId));
@@ -191,6 +189,7 @@ namespace OutOfOffice.MVC.Controllers
             model.Comment = approvalRequest.Comment;
 
             await _mediator.Send(model);
+            CurrentStatus = model.Status;
             _toastService.Success("Updated given Approval Request");
             return RedirectToAction(nameof(Index));
         }

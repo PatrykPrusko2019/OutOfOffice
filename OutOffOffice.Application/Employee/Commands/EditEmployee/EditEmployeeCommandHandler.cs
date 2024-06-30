@@ -24,7 +24,7 @@ namespace OutOffOffice.Application.Employee.Commands.EditEmployee
 
             bool result = employee.Subdivision != request.Subdivision;
 
-            if ( !(result && request.Subdivision == "") )
+            if ( !(result && request.Subdivision == "" || result && request.Subdivision == null) )
             {
                 var isEditable = user != null && employee.IdHrManager == user.EmployeeId && (employee.FullName.ToLower().Trim() != user.Email.Trim());
                 isEditable = isEditable && (CurrentUser.Role == "HR_MANAGER" || CurrentUser.Role == "ADMIN");

@@ -226,7 +226,7 @@ namespace OutOfOffice.MVC.Controllers
         {
             var givenEmployees = await _mediator.Send(new GetAllEmployeesQuery());
 
-            givenEmployees = givenEmployees.Where(x => x.Subdivision == id.ToString());
+            givenEmployees = givenEmployees.Where(x => x.Subdivision == id.ToString()).ToArray();
 
             for(int i = 0; i < givenEmployees.Count(); i++)
             {
