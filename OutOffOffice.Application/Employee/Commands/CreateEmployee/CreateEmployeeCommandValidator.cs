@@ -55,7 +55,8 @@ namespace OutOffOffice.Application.Employee.Commands.CreateEmployee
                 });
 
             RuleFor(e => e.OutOfOfficeBalance).NotEmpty().WithMessage("Please enter: value > 0")
-                .GreaterThan(0).WithErrorCode("Please enter: value > 0");
+                .GreaterThan(0).WithErrorCode("Please enter: value > 0")
+                .LessThan(60).WithErrorCode("Please enter: value < 60");
         }
 
     }

@@ -37,5 +37,6 @@ namespace OutOfOffice.Infrastructure.Repositories
 
         public async Task<Employee> GetEmployeeById(int id)
         => await _dbContext.Employees.FirstOrDefaultAsync(e => e.Id == id);
+
     }
 }

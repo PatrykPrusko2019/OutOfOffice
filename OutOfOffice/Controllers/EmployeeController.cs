@@ -1,5 +1,6 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using AutoMapper;
+using AutoMapper.Internal;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +12,9 @@ using OutOffOffice.Application.Employee.Commands.EditEmployee;
 using OutOffOffice.Application.Employee.Commands.RemoveEmployee;
 using OutOffOffice.Application.Employee.Queries.GetAllEmployees;
 using OutOffOffice.Application.Employee.Queries.GetEmployeeById;
+using OutOffOffice.Application.Project.Commands.EditProject;
 using OutOffOffice.Application.Project.Queries.GetAllProjects;
+using OutOffOffice.Application.Project.Queries.GetProjectById;
 
 namespace OutOfOffice.MVC.Controllers
 {
@@ -46,18 +49,28 @@ namespace OutOfOffice.MVC.Controllers
 
             if (searchEmployye != null && CurrentUser.Role != "PROJECT_MANAGER" && CurrentUser.Role != "ADMIN")
             {
-                var givenEmployees = employees.Where(e => e.IdHrManager == user.EmployeeId).ToList();
+               var givenEmployees = employees.Where(e => e.IdHrManager == user.EmployeeId).ToList();
+
+               var skipEmployee = givenEmployees.FirstOrDefault(e => e.Id == _userContext.GetCurrentUser()?.EmployeeId);
+               if (skipEmployee != null) givenEmployees.Remove(skipEmployee); 
 
                return View(FindGivenEmployee(searchName, givenEmployees));
             }
             else if (CurrentUser.Role == "PROJECT_MANAGER")
             {
-                    employees = employees.Where(e => e.Subdivision == null);
+                    employees = employees.Where(e => e.Subdivision == null || e.Subdivision == "");
                 
                 return View(FindGivenEmployee(searchName, employees));
             }
 
-            return View(FindGivenEmployee(searchName, employees));
+            var skipEmployee2 = employees.FirstOrDefault(e => e.Id == _userContext.GetCurrentUser()?.EmployeeId);
+            if (skipEmployee2 != null)
+            {
+                var results = employees.ToList();
+                results.Remove(skipEmployee2);
+                employees = results;
+            }
+                return View(FindGivenEmployee(searchName, employees));
         }
 
         private IEnumerable<EmployeeDto> FindGivenEmployee(string searchName, IEnumerable<EmployeeDto> employees)
@@ -137,6 +150,30 @@ namespace OutOfOffice.MVC.Controllers
         [Route("Employee/{id}/Delete")]
         public async Task<IActionResult> Delete(int id)
         {
+            var employeeDto = await _mediator.Send(new GetEmployeeByIdQuery(id));
+
+            var project = await _mediator.Send(new GetProjectByIdQuery(int.Parse(employeeDto.Subdivision)));
+
+            string[] strings = project.EmployeesId.Split(',');
+            var result = new List<string>(strings);
+            project.EmployeesId = "";
+            if (result.Count > 0)
+            {
+                for (int i = 0; i < result.Count; i++)
+                {
+                    if (result[i] != id.ToString())
+                    project.EmployeesId += result[i] + ",";
+                }
+                project.EmployeesId = project.EmployeesId.Replace(",,", ",");
+                if (project.EmployeesId.Length == 1) project.EmployeesId = "";
+            }
+            else project.EmployeesId = "";
+
+            EditProjectCommand model = _mapper.Map<EditProjectCommand>(project);
+            await _mediator.Send(model);
+            
+
+
             await _mediator.Send(new DeleteEmployeeCommand(id));
             _toastService.Success("Deleted given Employee");
             return RedirectToAction(nameof(Index));

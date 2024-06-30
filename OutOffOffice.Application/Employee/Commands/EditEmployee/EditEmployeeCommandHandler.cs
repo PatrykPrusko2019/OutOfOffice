@@ -21,18 +21,25 @@ namespace OutOffOffice.Application.Employee.Commands.EditEmployee
             var employee = await _repository.GetEmployeeById(request.Id);
 
             var user = _userContext.GetCurrentUser();
-            var isEditable = user != null && employee.IdHrManager == user.EmployeeId && (employee.FullName.ToLower().Trim() != user.Email.Trim());
-            isEditable = isEditable && (CurrentUser.Role == "HR_MANAGER" || CurrentUser.Role == "ADMIN");
 
-            if (!isEditable) 
+            bool result = employee.Subdivision != request.Subdivision;
+
+            if ( !(result && request.Subdivision == "") )
             {
-                return Unit.Value;
+                var isEditable = user != null && employee.IdHrManager == user.EmployeeId && (employee.FullName.ToLower().Trim() != user.Email.Trim());
+                isEditable = isEditable && (CurrentUser.Role == "HR_MANAGER" || CurrentUser.Role == "ADMIN");
+
+                if (!isEditable)
+                {
+                    return Unit.Value;
+                }
             }
 
             employee.Status = request.Status != null ? request.Status : employee.Status;
             employee.OutOfOfficeBalance = request.OutOfOfficeBalance;
             employee.Position = request.Position != null ? request.Position : employee.Position;
             employee.Photo = request.Photo != null ? employee.Photo = request.Photo : employee.Photo = "";
+            employee.Subdivision = request.Subdivision != null ? request.Subdivision : employee.Subdivision;
 
             await _repository.Commit();
 

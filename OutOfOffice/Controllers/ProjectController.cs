@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OutOffOffice.Application.ApplicationUser;
+using OutOffOffice.Application.Employee.Commands.EditEmployee;
 using OutOffOffice.Application.Employee.Queries.GetAllEmployees;
 using OutOffOffice.Application.Employee.Queries.GetEmployeeById;
 using OutOffOffice.Application.Project;
@@ -12,6 +13,8 @@ using OutOffOffice.Application.Project.Commands.DeleteProject;
 using OutOffOffice.Application.Project.Commands.EditProject;
 using OutOffOffice.Application.Project.Queries.GetAllProjects;
 using OutOffOffice.Application.Project.Queries.GetProjectById;
+using OutOfOffice.Domain.Entities;
+using OutOfOffice.Domain.Interfaces;
 using X.PagedList;
 
 namespace OutOfOffice.MVC.Controllers
@@ -23,13 +26,15 @@ namespace OutOfOffice.MVC.Controllers
         private readonly IMapper _mapper;
         private readonly IUserContext _userContext;
         private readonly INotyfService _toastService;
+        private readonly IEmployeeRepository _employeeRepository;
 
-        public ProjectController(IMediator mediator, IMapper mapper, IUserContext userContext, INotyfService toastService)
+        public ProjectController(IMediator mediator, IMapper mapper, IUserContext userContext, INotyfService toastService, IEmployeeRepository employeeRepository)
         {
             _mediator = mediator;
             _mapper = mapper;
             _userContext = userContext;
             _toastService = toastService;
+            _employeeRepository = employeeRepository;
         }
 
         [Route("Lists/Projects")]
@@ -219,6 +224,18 @@ namespace OutOfOffice.MVC.Controllers
         [Route("Project/{id}/Delete")]
         public async Task<IActionResult> Delete(int id)
         {
+            var givenEmployees = await _mediator.Send(new GetAllEmployeesQuery());
+
+            givenEmployees = givenEmployees.Where(x => x.Subdivision == id.ToString());
+
+            for(int i = 0; i < givenEmployees.Count(); i++)
+            {
+                var updatedEmployee = givenEmployees.ElementAt(i);
+                updatedEmployee.Subdivision = "";
+                EditEmployeeCommand model = _mapper.Map<EditEmployeeCommand>(updatedEmployee);
+                await _mediator.Send(model);
+            }
+
             await _mediator.Send(new DeleteProjectCommand(id));
             _toastService.Success("Deleted given Project");
             return RedirectToAction(nameof(Index));
