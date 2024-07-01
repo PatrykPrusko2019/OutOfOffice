@@ -33,6 +33,10 @@
                 <h5 class="card-title">@item.Position</h5>
                 <h6 class="card-subtitle mb-2 text-muted">@item.Status</h6>
                 <p class="card-text">@item.OutOfOfficeBalance</p>
+                <p class="card-img">
+                <img src="@Url.Content( @item.Photo )" width="200" height="200" />
+                </p>
+                
 
                 <a class="btn btn-primary" asp-controller="Employee" asp-action="Details" asp-route-id="@item.Id">Details</a>
 

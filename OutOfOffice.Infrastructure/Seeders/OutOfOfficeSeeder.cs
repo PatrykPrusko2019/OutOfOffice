@@ -34,7 +34,7 @@ namespace OutOfOffice.Infrastructure.Seeders
                         Position = "ADMIN",
                         Status = "Active",
                         OutOfOfficeBalance = 26,
-                        Photo = @$"D:\MySheets\ProgramsInCSharp\GitHubProjects\ProjectWorkOutOfOffice\OutOfOffice\Images\fifth.JPG",
+                        Photo = @$"~/images/men.jpg",
                         
                     };
 
@@ -44,7 +44,7 @@ namespace OutOfOffice.Infrastructure.Seeders
                         Position = "HR_MANAGER",
                         Status = "Active",
                         OutOfOfficeBalance = 22,
-                        Photo = @$"D:\MySheets\ProgramsInCSharp\GitHubProjects\ProjectWorkOutOfOffice\OutOfOffice\Images\fifth.JPG",
+                        Photo = @$"~/images/mend2.jpg",
                         
                     };
 
@@ -54,7 +54,7 @@ namespace OutOfOffice.Infrastructure.Seeders
                         Position = "HR_MANAGER",
                         Status = "Active",
                         OutOfOfficeBalance = 26,
-                        Photo = @$"D:\MySheets\ProgramsInCSharp\GitHubProjects\ProjectWorkOutOfOffice\OutOfOffice\Images\photo.PNG",
+                        Photo = @$"~/images/men.png",
                         
                        
                     };
@@ -65,7 +65,7 @@ namespace OutOfOffice.Infrastructure.Seeders
                         Position = "PROJECT_MANAGER",
                         Status = "Active",
                         OutOfOfficeBalance = 23,
-                        Photo = @$"~/Images/fifth.JPG",
+                        Photo = @$"~/images/fifth.jpg",
                         Projects = new List<Domain.Entities.Project>()
                         {
                             new Domain.Entities.Project()
@@ -94,7 +94,7 @@ namespace OutOfOffice.Infrastructure.Seeders
                         Position = "PROJECT_MANAGER",
                         Status = "Active",
                         OutOfOfficeBalance = 23,
-                        Photo = @$"~\Images\photo.PNG",
+                        Photo = @$"~/images/mend2.png",
                         Projects = new List<Domain.Entities.Project>()
                         {
                             new Domain.Entities.Project()
@@ -123,7 +123,7 @@ namespace OutOfOffice.Infrastructure.Seeders
                         Position = "EMPLOYEE",
                         Status = "Active",
                         OutOfOfficeBalance = 23,
-                        Photo = @$"~\Images\fifth.JPG",
+                        Photo = @$"~/images/mend2.jpg",
                         
                     };
 
@@ -133,7 +133,7 @@ namespace OutOfOffice.Infrastructure.Seeders
                         Position = "EMPLOYEE",
                         Status = "Active",
                         OutOfOfficeBalance = 23,
-                        Photo = @$"~\Images\fifth.JPG",
+                        Photo = @$"~/images/men.jpg",
 
                     };
 
@@ -143,7 +143,7 @@ namespace OutOfOffice.Infrastructure.Seeders
                         Position = "EMPLOYEE",
                         Status = "Active",
                         OutOfOfficeBalance = 23,
-                        Photo = @$"~\Images\fifth.JPG",
+                        Photo = @$"~/images/mend2.jpg",
 
                     };
 
@@ -153,7 +153,7 @@ namespace OutOfOffice.Infrastructure.Seeders
                         Position = "EMPLOYEE",
                         Status = "Active",
                         OutOfOfficeBalance = 23,
-                        Photo = @$"~\Images\fifth.JPG",
+                        Photo = @$"~/images/men.jpg",
 
                     };
 
@@ -163,7 +163,7 @@ namespace OutOfOffice.Infrastructure.Seeders
                         Position = "EMPLOYEE",
                         Status = "Active",
                         OutOfOfficeBalance = 23,
-                        Photo = @$"~\Images\fifth.JPG",
+                        Photo = @$"~/images/photo.png",
 
                     };
 
@@ -173,7 +173,7 @@ namespace OutOfOffice.Infrastructure.Seeders
                         Position = "EMPLOYEE",
                         Status = "Active",
                         OutOfOfficeBalance = 28,
-                        Photo = @$"~\Images\fifth.JPG",
+                        Photo = @$"~/images/second.jpg",
 
                     };
 
@@ -183,7 +183,7 @@ namespace OutOfOffice.Infrastructure.Seeders
                         Position = "EMPLOYEE",
                         Status = "Active",
                         OutOfOfficeBalance = 23,
-                        Photo = @$"~\Images\fifth.JPG",
+                        Photo = @$"~/images/mend2.jpg",
 
                     };
 
@@ -193,7 +193,7 @@ namespace OutOfOffice.Infrastructure.Seeders
                         Position = "EMPLOYEE",
                         Status = "Active",
                         OutOfOfficeBalance = 13,
-                        Photo = @$"~\Images\fifth.JPG",
+                        Photo = @$"~/images/fifth.jpg",
 
                     };
 
@@ -203,7 +203,7 @@ namespace OutOfOffice.Infrastructure.Seeders
                         Position = "EMPLOYEE",
                         Status = "Active",
                         OutOfOfficeBalance = 14,
-                        Photo = @$"~\Images\fifth.JPG",
+                        Photo = @$"~/images/third.jpg",
 
                     };
 
@@ -213,7 +213,7 @@ namespace OutOfOffice.Infrastructure.Seeders
                         Position = "EMPLOYEE",
                         Status = "Active",
                         OutOfOfficeBalance = 9,
-                        Photo = @$"~\Images\fifth.JPG",
+                        Photo = @$"~/images/fifth.jpg",
 
                     };
 
